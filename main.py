@@ -12,6 +12,9 @@ class MyClient(discord.Client):
             folderName = os.path.join(os.getcwd(), g.name)
             if not os.path.exists(folderName):
                 os.makedirs(folderName)
+            srcName = os.path.join(folderName, "src")
+            if not os.path.exists(srcName):
+                os.makedirs(srcName)
             for c in g.channels:
                 if (c.type == discord.ChannelType.text):
                     print("----- "+c.name+" -----")
@@ -24,14 +27,14 @@ class MyClient(discord.Client):
                         for a in m.attachments:
                             r = requests.get(a.url, stream = True)
                             file_name = a.url.split('/')[-1]
-                            with open(folderName+"/"+file_name,'wb') as out_file:
+                            with open(srcName+"/"+file_name,'wb') as out_file:
                                 shutil.copyfileobj(r.raw, out_file)
                             print(a.url)
                             ext = file_name.split('.')[-1]
                             print(ext)
                             if (ext == 'png' or ext == 'jpg'):
                                 print("made it!")
-                                f.write('<img src="'+file_name+'"></img>\n')
+                                f.write('<img src="src/'+file_name+'"></img>\n')
                             else:
                                 f.write(a.url+"\n")
         await self.close()
