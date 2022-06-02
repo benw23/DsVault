@@ -2,16 +2,20 @@ import discord
 import requests
 import urllib.request
 import shutil
+import os
 
 class MyClient(discord.Client):
 
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
         for g in self.guilds:
+            folderName = os.path.join(os.getcwd(), g.name)
+            if not os.path.exists(folderName):
+                os.makedirs(folderName)
             for c in g.channels:
                 if (c.type == discord.ChannelType.text):
                     print("----- "+c.name+" -----")
-                    f = open(c.name+".htm", 'w')
+                    f = open(folderName+"/"+c.name+".htm", 'w')
                     f.write("<h1>"+c.name+"</h1>\n")
                     messages = await c.history(limit=None).flatten()
                     messages = messages[::-1]
@@ -20,7 +24,7 @@ class MyClient(discord.Client):
                         for a in m.attachments:
                             r = requests.get(a.url, stream = True)
                             file_name = a.url.split('/')[-1]
-                            with open(file_name,'wb') as out_file:
+                            with open(folderName+"/"+file_name,'wb') as out_file:
                                 shutil.copyfileobj(r.raw, out_file)
                             print(a.url)
                             ext = file_name.split('.')[-1]
