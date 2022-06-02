@@ -35,7 +35,7 @@ class MyClient(discord.Client):
                             print(a.url)
                             ext = file_name.split('.')[-1]
                             print(ext)
-                            if (ext == 'png' or ext == 'jpg'):
+                            if (ext == 'png' or ext == 'jpg' or ext == 'jpeg' or ext == 'gif'):
                                 print("made it!")
                                 f.write('<img src="src/'+c.name+"/"+file_name+'"></img>\n')
                             else:
