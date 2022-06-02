@@ -3,6 +3,7 @@ import requests
 import urllib.request
 import shutil
 import os
+import random
 
 class MyClient(discord.Client):
 
@@ -30,10 +31,19 @@ class MyClient(discord.Client):
                         for a in m.attachments:
                             r = requests.get(a.url, stream = True)
                             file_name = a.url.split('/')[-1]
+                            ext = file_name.split('.')[-1]
+
+                            # if the file name already exists, append a random number
+                            # from 0-9 until the file does not exist
+                            fullPath = os.path.join(thisName, file_name)
+                            while os.path.exists(fullPath):
+                                i = file_name.rfind('.')
+                                file_name = file_name[:i] + str(random.randint(0,9)) + file_name[i:]
+                                fullPath = os.path.join(thisName, file_name)
+
                             with open(thisName+"/"+file_name,'wb') as out_file:
                                 shutil.copyfileobj(r.raw, out_file)
                             print(a.url)
-                            ext = file_name.split('.')[-1]
                             print(ext)
                             if (ext == 'png' or ext == 'jpg' or ext == 'jpeg' or ext == 'gif'):
                                 print("made it!")
