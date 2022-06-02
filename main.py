@@ -33,5 +33,17 @@ class MyClient(discord.Client):
         await self.close()
 
 client = MyClient()
-f = open("key.txt")
-client.run(f.readline())
+try:
+    with open("key.txt", "r") as f:
+        content = f.read()
+    if not content:
+        print("key.txt is empty")
+    else:
+        client.run(content)
+except IOError as e:
+    if e.errno == 2:
+        print("key.txt does not exist")
+    else:
+        print("I/O error({0}): {1}".format(e.errno, e.strerror))
+except:
+   print("Unexpected error:", sys.exc_info()[0])
