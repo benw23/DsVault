@@ -12,11 +12,11 @@ class MyClient(discord.Client):
                 if (c.type == discord.ChannelType.text):
                     print("----- "+c.name+" -----")
                     f = open(c.name+".htm", 'w')
-                    f.write("<h1>"+c.name+"</h1>")
+                    f.write("<h1>"+c.name+"</h1>\n")
                     messages = await c.history(limit=200).flatten()
                     messages = messages[::-1]
                     for m in messages:
-                        f.write('<p>{0.author}: {0.content}</p>'.format(m))
+                        f.write('<p>{0.author}: {0.content}</p>\n'.format(m))
                         for a in m.attachments:
                             r = requests.get(a.url, stream = True)
                             file_name = a.url.split('/')[-1]
@@ -27,9 +27,9 @@ class MyClient(discord.Client):
                             print(ext)
                             if (ext == 'png' or ext == 'jpg'):
                                 print("made it!")
-                                f.write('<img src="'+file_name+'"></img>')
+                                f.write('<img src="'+file_name+'"></img>\n')
                             else:
-                                f.write(a.url)
+                                f.write(a.url+"\n")
         await self.close()
 
 client = MyClient()
