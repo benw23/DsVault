@@ -13,7 +13,7 @@ class MyClient(discord.Client):
                     print("----- "+c.name+" -----")
                     f = open(c.name+".htm", 'w')
                     f.write("<h1>"+c.name+"</h1>\n")
-                    messages = await c.history(limit=200).flatten()
+                    messages = await c.history(limit=None).flatten()
                     messages = messages[::-1]
                     for m in messages:
                         f.write('<p>{0.author}: {0.content}</p>\n'.format(m))
