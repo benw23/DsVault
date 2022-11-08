@@ -5,6 +5,11 @@ import shutil
 import os
 import random
 import argparse
+import asyncio
+import platform
+
+if platform.system() == 'Windows':
+	asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 def printGuilds(guilds):
     print("This bot is a member of the following servers:")
