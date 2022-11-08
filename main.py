@@ -147,9 +147,7 @@ class MyClient(discord.Client):
                 else:
                     print("Guild does not exist")
         else:
-            if not args.guild:
-                print("Please specify a guild")
-            elif not args.category:
+            if not args.category:
                 g = self.get_guild(args.guild)
                 if g:
                     await backupGuild(g)
@@ -188,6 +186,10 @@ args = parser.parse_args()
 intents = discord.Intents.default()
 intents.message_content = True
 client = MyClient(intents=intents)
+
+if not args.guild and not args.show:
+    print("Please specify a guild. Use -h or --help to see options.")
+    quit()
 
 ## READ IN API KEY
 try:
