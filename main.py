@@ -149,7 +149,6 @@ class MyClient(discord.Client):
         else:
             if not args.guild:
                 print("Please specify a guild")
-                quit()
             elif not args.category:
                 g = self.get_guild(args.guild)
                 if g:
