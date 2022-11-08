@@ -5,7 +5,7 @@ Python "bot" with discordpy (https://github.com/Rapptz/discord.py) to generate a
 Channels are represented as HTML files, with image attachments embedded with `<img>` tags and other file types linked to with `<a>`.
 All file attachments are downloaded and stored in a `/src` directory under each channel's folder.
 
-Backups are stored in a hierarchical structure, `channel-id` -> `category-id` -> `channel-id`.
+Backups are stored in a hierarchical structure, `guild-id` -> `category-id` -> `channel-id`.
 Under `channel-id` and `category-id` folders, an `index.html` file is generated with anchor links to the categories and channels, respectively, below.
 
 ```
