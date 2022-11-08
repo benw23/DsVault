@@ -10,6 +10,7 @@ import platform
 
 if platform.system() == 'Windows':
 	asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+ROOT_DIR = os.path.realpath(os.path.dirname(__file__))
 
 def printGuilds(guilds):
     print("This bot is a member of the following servers:")
@@ -34,7 +35,7 @@ def printChannels(category):
 async def backupGuild(guild):
     print("backing up guild {} : {}".format(guild.id, guild))
 
-    folderName = os.path.join(os.getcwd(), str(guild.id))
+    folderName = os.path.join(ROOT_DIR, str(guild.id))
     if not os.path.exists(folderName):
         os.makedirs(folderName)
 
@@ -57,7 +58,7 @@ async def backupGuild(guild):
 async def backupCategory(category):
     print("--- backing up category {} : {}".format(category.id, category))
 
-    rootFolder = os.path.join(os.getcwd(), str(category.guild.id))
+    rootFolder = os.path.join(ROOT_DIR, str(category.guild.id))
     folderName = rootFolder+"/"+str(category.id)
     if not os.path.exists(folderName):
         os.makedirs(folderName)
@@ -77,7 +78,7 @@ async def backupCategory(category):
 async def backupChannel(channel):
     print("------ backing up channel {} : {}".format(channel.id, channel))
 
-    rootFolder = os.path.join(os.getcwd(), str(channel.guild.id))
+    rootFolder = os.path.join(ROOT_DIR, str(channel.guild.id))
     folderName = rootFolder+"/"+str(channel.category.id)+"/"+str(channel.id)
     if not os.path.exists(folderName):
         os.makedirs(folderName)
