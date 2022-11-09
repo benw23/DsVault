@@ -64,11 +64,11 @@ async def backupCategory(category):
         os.makedirs(folderName)
 
     f = open(folderName+"/index.htm", 'w', encoding="utf-8")
-    f.write("<h1><a href='../index.htm'>{}</a> / {} </h1><ul>\n".format(category.guild.name, category.name))
+    f.write(f"<h1>\n<a href='../index.htm'>{ category.guild.name }</a> / { category.name } \n</h1>\n\n<ul>\n")
 
     for channel in category.channels:
         if channel.type == discord.ChannelType.text:
-            f.write("<li><a href='{}'>{}</a></li>".format(str(channel.id)+"/index.htm", channel.name))
+            f.write(f"<li><a href='{ channel.id }'>{ channel.name }</a></li>\n")
             await backupChannel(channel)
 
     f.write("</ul>")
@@ -85,10 +85,10 @@ async def backupChannel(channel):
 
     f = open(folderName+"/index.htm", 'w', encoding="utf-8")
 
-    f.write("<h1>")
-    f.write("<a href='../../index.htm'>{}</a> / ".format(channel.guild.name))
-    f.write("<a href='../index.htm'>{}</a> / ".format(channel.category.name))
-    f.write("{}</h1>".format(channel.name))
+    f.write("<h1>\n")
+    f.write(f"<a href='../../index.htm'>{ channel.guild.name }</a> / \n")
+    f.write(f"<a href='../index.htm'>{ channel.category.name }</a> / { channel.name }\n")
+    f.write("</h1>\n\n")
 
 
     srcName = os.path.join(folderName, "src")
@@ -97,7 +97,8 @@ async def backupChannel(channel):
 
     out = []
     async for m in channel.history(limit=None):
-        out.append('<p>{}: {}</p>\n'.format(m.author.name, m.content))
+        thisLine = ""
+        thisLine += f'<p>{ m.author.name }: { m.content }'
 
         for a in m.attachments:
             r = requests.get(a.url, stream = True)
@@ -116,9 +117,11 @@ async def backupChannel(channel):
                 shutil.copyfileobj(r.raw, out_file)
             print(a.url)
             if (ext == 'png' or ext == 'jpg' or ext == 'jpeg' or ext == 'gif'):
-                out.append('<img src="src/'+file_name+'"></img>\n')
+                thisLine += '<img src="src/'+file_name+'"></img>'
             else:
-                out.append(a.url+"\n")
+                thisLine += f'<a href="src/{ file_name }">{ file_name }</a>'
+        thisLine += '</p>\n'
+        out.append(thisLine)
     for o in out[::-1]:
         f.write(o)
     f.close()
